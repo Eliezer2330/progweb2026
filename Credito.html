@@ -2,155 +2,98 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario de Evaluación de Crédito</title>
+    <title>Evaluación de Crédito</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery UI (para autocomplete) -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <link rel="stylesheet" href="estilos.css">
 </head>
 
-<body class="bg-light">
+<body>
 
-<div class="container mt-5">
-    <div class="card shadow-lg">
+<div class="contenedor-principal">
+    <div class="card shadow tarjeta">
         <div class="card-header bg-primary text-white text-center">
-            <h3>Evaluación de Crédito</h3>
+            <h5 class="mb-0">Evaluación de Crédito</h5>
         </div>
 
         <div class="card-body">
-
             <form id="formCredito">
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Edad</label>
-                        <input type="number" class="form-control" id="edad" required>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">País de nacimiento</label>
-                        <input type="text" class="form-control" id="pais" required>
-                    </div>
+                <div class="mb-2">
+                    <label class="form-label">Edad</label>
+                    <input type="number" class="form-control form-control-sm" id="edad" required>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Ingresos Mensuales</label>
-                        <input type="number" class="form-control" id="ingresos" required>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Buró de Crédito</label>
-                        <select class="form-select" id="buro" required>
-                            <option value="">Seleccione</option>
-                            <option value="bueno">Bueno</option>
-                            <option value="regular">Regular</option>
-                            <option value="malo">Malo</option>
-                        </select>
-                    </div>
+                <div class="mb-2">
+                    <label class="form-label">País de nacimiento</label>
+                    <input type="text" class="form-control form-control-sm" id="pais">
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Score</label>
-                        <input type="number" class="form-control" id="score" required>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Monto del Préstamo</label>
-                        <input type="number" class="form-control" id="monto" required>
-                    </div>
+                <div class="mb-2">
+                    <label class="form-label">Ingresos mensuales</label>
+                    <input type="number" class="form-control form-control-sm" id="ingresos" required>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Número de Meses</label>
-                        <input type="number" class="form-control" id="meses" required>
-                    </div>
+                <!-- Buró automático -->
+                <div class="mb-2">
+                    <label class="form-label">Buró de crédito</label>
+                    <input type="text" class="form-control form-control-sm" id="buro" readonly>
+                </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Tasa de Interés Referencial (%)</label>
-                        <input type="number" class="form-control" id="tasaRef" required>
-                    </div>
+                <!-- Score -->
+                <div class="mb-3">
+                    <label class="form-label">
+                        Score: <span id="valorScore" class="fw-bold">650</span>
+                    </label>
+                    <input type="range" class="form-range" id="score"
+                           min="400" max="850" value="650">
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">Monto del préstamo</label>
+                    <input type="number" class="form-control form-control-sm" id="monto" required>
+                </div>
+
+                <div class="mb-2">
+                    <label class="form-label">
+                        Número de meses: <span id="valorMeses" class="fw-bold text-primary">12</span>
+                    </label>
+                    <input type="range" class="form-range" id="meses"
+                           min="12" max="60" step="12" value="12">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Tasa de Interés Anual (%)</label>
-                    <input type="number" class="form-control" id="tasaAnual" required>
+                    <input type="number" class="form-control form-control-sm" id="tasaAnual" required>
                 </div>
 
-                <div class="text-center">
-                    <button type="button" class="btn btn-success" onclick="evaluarCredito()">
-                        Evaluar Crédito
-                    </button>
-                </div>
+                <button type="button" class="btn btn-success btn-sm w-100" onclick="evaluarCredito()">
+                    Evaluar Crédito
+                </button>
 
             </form>
 
-            <div class="mt-4">
-                <div id="resultado" class="alert d-none"></div>
+            <div class="mt-3">
+                <div id="resultado" class="alert d-none p-2 small"></div>
             </div>
 
         </div>
     </div>
 </div>
 
-<script>
-function evaluarCredito() {
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    let edad = parseInt(document.getElementById("edad").value);
-    let ingresos = parseFloat(document.getElementById("ingresos").value);
-    let buro = document.getElementById("buro").value;
-    let score = parseInt(document.getElementById("score").value);
-    let monto = parseFloat(document.getElementById("monto").value);
-    let meses = parseInt(document.getElementById("meses").value);
-    let tasaAnual = parseFloat(document.getElementById("tasaAnual").value);
+<!-- jQuery UI -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-    let resultado = document.getElementById("resultado");
-
-    // Cálculo de tasa mensual
-    let tasaMensual = tasaAnual / 100 / 12;
-
-    // Fórmula de pago mensual (sistema francés)
-    let pagoMensual = (monto * tasaMensual) / (1 - Math.pow(1 + tasaMensual, -meses));
-
-    let aprobado = true;
-    let motivo = "";
-
-    if (edad < 18) {
-        aprobado = false;
-        motivo = "Debe ser mayor de edad.";
-    }
-    else if (buro === "malo") {
-        aprobado = false;
-        motivo = "Historial crediticio negativo.";
-    }
-    else if (score < 600) {
-        aprobado = false;
-        motivo = "Score insuficiente.";
-    }
-    else if (pagoMensual > (ingresos * 0.40)) {
-        aprobado = false;
-        motivo = "El pago mensual supera el 40% de sus ingresos.";
-    }
-
-    resultado.classList.remove("d-none");
-
-    if (aprobado) {
-        resultado.className = "alert alert-success";
-        resultado.innerHTML = `
-            <strong>Crédito Aprobado ✅</strong><br>
-            Pago mensual estimado: $${pagoMensual.toFixed(2)}
-        `;
-    } else {
-        resultado.className = "alert alert-danger";
-        resultado.innerHTML = `
-            <strong>Crédito Rechazado ❌</strong><br>
-            Motivo: ${motivo}
-        `;
-    }
-}
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
