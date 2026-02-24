@@ -1,0 +1,27 @@
+body {
+    background-color: #f4f6f9;
+}
+
+.contenedor-principal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.tarjeta {
+    width: 100%;
+    max-width: 420px;
+    border-radius: 12px;
+}
+
+/* Colores dinámicos del range */
+.range-bueno::-webkit-slider-thumb {
+    background: green;
+}
+.range-regular::-webkit-slider-thumb {
+    background: orange;
+}
+.range-malo::-webkit-slider-thumb {
+    background: red;
+}
