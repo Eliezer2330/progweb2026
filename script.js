@@ -59,7 +59,6 @@ $(document).ready(function(){
 
 function evaluarCredito(){
 
-    // Datos
     let edad = parseInt($("#edad").val());
     let ingresos = parseFloat($("#ingresos").val());
     let buro = $("#buro").val();
@@ -67,22 +66,26 @@ function evaluarCredito(){
     let monto = parseFloat($("#monto").val());
     let meses = parseInt($("#meses").val());
 
-    // TASA BANXICO (referencial)
-    const tasaBanxico = 7.00; // tasa base oficial :contentReference[oaicite:4]{index=4}
+    // 🔵 Tasa base Banxico (puedes actualizarla cuando cambie)
+    const tasaBanxico = 7.00;
 
-    // Ajuste de tasa según score
-    let tasaAjuste;
+    // Ajuste según score
+    let tasaAnual;
+
     if (score >= 700) {
-        tasaAjuste = tasaBanxico + 1; // Score bueno
-    } else if (score >= 600) {
-        tasaAjuste = tasaBanxico + 3; // Score regular
-    } else {
-        tasaAjuste = tasaBanxico + 5; // Score malo
+        tasaAnual = tasaBanxico + 1;
+    } 
+    else if (score >= 600) {
+        tasaAnual = tasaBanxico + 3;
+    } 
+    else {
+        tasaAnual = tasaBanxico + 5;
     }
 
-    let tasaAnual = tasaAjuste;
+    // 🔥 AQUÍ se coloca automáticamente en el input
+    $("#tasaAnual").val(tasaAnual.toFixed(2));
 
-    // Cálculo de pago
+    // Cálculo
     let tasaMensual = tasaAnual / 100 / 12;
     let pagoMensual = (monto * tasaMensual) /
         (1 - Math.pow(1 + tasaMensual, -meses));
@@ -112,7 +115,6 @@ function evaluarCredito(){
                  .addClass("alert alert-success")
                  .html(`
                     <strong>Crédito Aprobado ✅</strong><br>
-                    Tasa anual usada: ${tasaAnual.toFixed(2)}%<br>
                     Pago mensual estimado: $${pagoMensual.toFixed(2)}
                  `);
     } else {
