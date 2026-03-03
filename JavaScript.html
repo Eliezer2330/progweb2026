@@ -4,11 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .seleccionado{
+            border-color: red;
+        }
+    </style>
 </head>
     <script>
-        confirm ("Hola Mundo");
+    function alerta(){
+        alert(document.getElementById('txtnombre').value);}
+    function cambiaestilo(){
+        document.getElementById('txtnombre').className="seleccionado";}
+    function sumaresta(operacion){
+    a = parseInt(document.getElementById('txtnumeroA').value);
+    b = parseInt(document.getElementById('txtnumeroB').value);
+    if (operacion=="+"){
+        c = a + b;
+    }
+    else {
+        c= a - b;
+    }
+    document.getElementById('txtresultado').value = c;
+    }
     </script>
-<body>
     
+<body>
+    <input type="text" name="" id="txtnombre" 
+    onclick="cambiaestilo()">
+    <input type="button" value="confirmar"
+    onclick="alerta()">
+    <br><br>
+    Numero A <input type="number" id="txtnumeroA">
+    <br>
+    <input type="button" value="+" onclick="sumaresta(this.value)">
+    <input type="button" value="-" onclick="sumaresta(this.value)">
+    <br><br>
+    Numero B <input type="number" id="txtnumeroB">
+    <br><br>
+    Resultado <input type="number" id="txtresultado">
 </body>
 </html>
