@@ -12,7 +12,7 @@ h1 {
   top: 15px;
   left: 50%;
   transform: translateX(-50%);
-  color: white;
+  color: rgb(255, 0, 0);
   font-size: 1.5rem;
   letter-spacing: 3px;
   text-transform: uppercase;
