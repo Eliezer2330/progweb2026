@@ -6,23 +6,22 @@ var ctx = canvas.getContext("2d");
 var width = (canvas.width = window.innerWidth);
 var height = (canvas.height = window.innerHeight);
 
+var img = new Image();
+img.src = "amor.jpeg";
+
 // Actualizar dimensiones si el usuario cambia el tamaño de la ventana
 window.addEventListener("resize", function () {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
 });
 
-// =============================================
 // 2. FUNCIÓN AUXILIAR: Número aleatorio entre min y max
-// =============================================
 function random(min, max) {
   var num = Math.floor(Math.random() * (max - min + 1)) + min;
   return num;
 }
 
-// =============================================
 // 3. CONSTRUCTOR DEL OBJETO PELOTA (Ball)
-// =============================================
 function Ball(x, y, velX, velY, color, size) {
   this.x = x;       // Posición horizontal
   this.y = y;       // Posición vertical
@@ -32,25 +31,27 @@ function Ball(x, y, velX, velY, color, size) {
   this.size = size;   // Radio de la pelota en píxeles
 }
 
-// =============================================
 // 4. MÉTODO: Dibujar la pelota en el canvas
-// =============================================
 Ball.prototype.draw = function () {
-  ctx.beginPath();             // Iniciar un nuevo trazado
-  ctx.fillStyle = this.color;  // Definir el color de relleno
-  ctx.arc(
-    this.x,       // Centro X
-    this.y,       // Centro Y
-    this.size,    // Radio
-    0,            // Ángulo inicial (0 radianes)
-    2 * Math.PI   // Ángulo final (360° = círculo completo)
+  ctx.save();              // Guardar estado del canvas
+
+  ctx.beginPath();
+  ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+  ctx.clip();              // Recortar en forma circular
+
+  // Dibujar la imagen centrada en la pelota
+  ctx.drawImage(
+    img,
+    this.x - this.size,   // Posición X (esquina superior izquierda)
+    this.y - this.size,   // Posición Y
+    this.size * 2,        // Ancho = diámetro
+    this.size * 2         // Alto = diámetro
   );
-  ctx.fill();                  // Rellenar el círculo con el color definido
+
+  ctx.restore();           // Restaurar estado del canvas
 };
 
-// =============================================
 // 5. MÉTODO: Actualizar la posición de la pelota (movimiento y rebote)
-// =============================================
 Ball.prototype.update = function () {
   // Rebote en el borde DERECHO
   if (this.x + this.size >= width) {
@@ -77,9 +78,7 @@ Ball.prototype.update = function () {
   this.y += this.velY;
 };
 
-// =============================================
 // 6. MÉTODO: Detección de colisiones entre pelotas
-// =============================================
 Ball.prototype.collisionDetect = function () {
   for (var j = 0; j < balls.length; j++) {
     // No comparar la pelota consigo misma
@@ -102,30 +101,26 @@ Ball.prototype.collisionDetect = function () {
   }
 };
 
-// =============================================
 // 7. ARREGLO donde se guardarán todas las pelotas
-// =============================================
 var balls = [];
 
-// =============================================
 // 8. BUCLE DE ANIMACIÓN PRINCIPAL
-// =============================================
 function loop() {
-  // Dibujar fondo negro semitransparente para crear efecto de estela
-  ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+  // Dibujar fondo blanco semitransparente para crear efecto de estela
+  ctx.fillStyle = "rgb(0, 0, 0)";
   ctx.fillRect(0, 0, width, height);
 
   // Crear nuevas pelotas hasta llegar a un máximo de 25
   while (balls.length < 25) {
-    var size = random(10, 20);
+    var size = random(20, 60);
 
     var ball = new Ball(
       random(0 + size, width - size),   // Posición X aleatoria (dentro del canvas)
       random(0 + size, height - size),  // Posición Y aleatoria (dentro del canvas)
-      random(-7, 7),                    // Velocidad X aleatoria
-      random(-7, 7),                    // Velocidad Y aleatoria
+      random(-2, 2),                    // Velocidad X aleatoria
+      random(-2, 2),                    // Velocidad Y aleatoria
       `rgb(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)})`, // Color aleatorio
-      size                              // Tamaño aleatorio entre 10 y 20
+      size                              // Tamaño aleatorio entre 20 y 40
     );
 
     balls.push(ball); // Agregar la nueva pelota al arreglo
@@ -142,7 +137,5 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-// =============================================
 // 9. INICIAR LA ANIMACIÓN
-// =============================================
 loop();
