@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Cantantes</title>
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+background: linear-gradient(135deg,#1e3c72,#2a5298);
+color:white;
+text-align:center;
+padding:40px;
+}
+
+h2{
+margin-bottom:20px;
+}
+
+select{
+padding:10px;
+font-size:16px;
+border-radius:8px;
+border:none;
+margin-bottom:30px;
+cursor:pointer;
+}
+
+.card{
+background:white;
+color:black;
+width:380px;
+margin:auto;
+border-radius:15px;
+box-shadow:0px 5px 20px rgba(0,0,0,0.3);
+padding:20px;
+animation: aparecer 0.6s ease;
+}
+
+img{
+width:200px;
+border-radius:10px;
+margin-bottom:15px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th{
+background:#2a5298;
+color:white;
+padding:8px;
+}
+
+td{
+padding:8px;
+border-bottom:1px solid #ddd;
+}
+
+h3{
+margin-top:15px;
+color:#2a5298;
+}
+
+ul{
+text-align:left;
+margin-left:20px;
+}
+
+.album{
+background:#f2f2f2;
+padding:8px;
+border-radius:8px;
+margin-top:10px;
+font-weight:bold;
+}
+
+@keyframes aparecer{
+from{
+opacity:0;
+transform:scale(0.8);
+}
+to{
+opacity:1;
+transform:scale(1);
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Información de Cantantes</h2>
+
+<select id="cantante" onchange="mostrarInfo()">
+<option value="">Selecciona un cantante</option>
+<option value="paulo">Paulo Londra</option>
+<option value="badbunny">Bad Bunny</option>
+<option value="duki">Duki</option>
+<option value="trueno">Trueno</option>
+<option value="nicki">Nicki Nicole</option>
+<option value="jbalvin">J Balvin</option>
+<option value="enrique">Enrique Iglesias</option>
+<option value="turizo">Manuel Turizo</option>
+</select>
+
+<div id="demo"></div>
+
+<script>
+
+const cantantes = {
+
+paulo:{
+genero:"Trap / Rap",
+pais:"Argentina",
+edad:26,
+album:"Homerun",
+canciones:["Adán y Eva","Tal Vez","Plan A"],
+imagen:"https://i.scdn.co/image/ab676161000051743deda947e22df7dd3c8fe2c2"
+},
+
+badbunny:{
+genero:"Reggaeton / Trap",
+pais:"Puerto Rico",
+edad:30,
+album:"Un Verano Sin Ti",
+canciones:["Tití Me Preguntó","Moscow Mule","Ojitos Lindos"],
+imagen:"https://i.scdn.co/image/ab6761610000517481f47f44084e0a09b5f0fa13"
+},
+
+duki:{
+genero:"Trap",
+pais:"Argentina",
+edad:28,
+album:"Desde el Fin del Mundo",
+canciones:["Mal Acostumbrao","She Don't Give a FO","Goteo"],
+imagen:"https://www.ecured.cu/images/d/d9/Duki.jpg"
+},
+
+trueno:{
+genero:"Rap / Trap",
+pais:"Argentina",
+edad:23,
+album:"Bien o Mal",
+canciones:["Dance Crip","Mamichula","Feel Me"],
+imagen:"https://cdn.musicboard.app/musicboard/media/ur9Za4UbsItLa0sE8L2mrkitxPdkqV07JtRc8GMgnvzR9bobtbltOuUKRBDzV6f5.webp"
+},
+
+nicki:{
+genero:"Pop / Trap",
+pais:"Argentina",
+edad:23,
+album:"Parte de Mí",
+canciones:["Colocao","Mamichula","No Toque Mi Naik"],
+imagen:"https://upload.wikimedia.org/wikipedia/commons/0/0f/Nicki_Nicole_entrevista_03.jpg"
+},
+
+jbalvin:{
+genero:"Reggaeton",
+pais:"Colombia",
+edad:39,
+album:"Vibras",
+canciones:["Mi Gente","Safari","Ginza"],
+imagen:"https://cdn-images.dzcdn.net/images/artist/325eaa46bc25052d0e3d549d60cc8225/1900x1900-000000-80-0-0.jpg"
+},
+
+enrique:{
+genero:"Pop Latino",
+pais:"España",
+edad:49,
+album:"Escape",
+canciones:["Bailando","Hero","Cuando Me Enamoro"],
+imagen:"https://i.scdn.co/image/ab676161000051744fa1405802a42c665b0f2dd1"
+},
+
+turizo:{
+genero:"Reggaeton / Pop",
+pais:"Colombia",
+edad:24,
+album:"Dopamina",
+canciones:["La Bachata","Una Lady Como Tú","Culpables"],
+imagen:"https://media.gq.com.mx/photos/673e567cc8c7573d529b6512/4:3/w_1780,h_1335,c_limit/Manuel_Turizo_gq_moty.png"
+}
+
+};
+
+function mostrarInfo(){
+
+let valor = document.getElementById("cantante").value;
+
+if(valor===""){
+document.getElementById("demo").innerHTML="";
+return;
+}
+
+let c = cantantes[valor];
+
+let contenido = `
+<div class="card">
+
+<img src="${c.imagen}">
+
+<table>
+
+<tr>
+<th>Género</th>
+<th>País</th>
+<th>Edad</th>
+</tr>
+
+<tr>
+<td>${c.genero}</td>
+<td>${c.pais}</td>
+<td>${c.edad}</td>
+</tr>
+
+</table>
+
+<h3>💿 Álbum más famoso</h3>
+<div class="album">${c.album}</div>
+
+<h3>🎵 Top 3 canciones</h3>
+
+<ul>
+<li>${c.canciones[0]}</li>
+<li>${c.canciones[1]}</li>
+<li>${c.canciones[2]}</li>
+</ul>
+
+</div>
+`;
+
+document.getElementById("demo").innerHTML = contenido;
+
+}
+
+</script>
+
+</body>
+</html>
